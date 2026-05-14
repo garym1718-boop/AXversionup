@@ -312,6 +312,13 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
     </div>
   </div>
 
+  <div style="margin-bottom:13px">
+    <label class="form-label" for="inp-nick">닉네임</label>
+    <input class="form-select" type="text" id="inp-nick"
+      style="padding:13px 15px;appearance:none;-webkit-appearance:none">
+    <div style="font-size:11px;color:var(--text3);margin-top:5px">설문용 닉네임을 입력해주세요</div>
+  </div>
+
   <div class="select-wrap">
     <label class="form-label" for="sel-job">직무</label>
     <select class="form-select" id="sel-job">
@@ -956,13 +963,15 @@ let styleVal='', timeVal='';
 // ─────────────────────────────────────────────
 // 인트로
 // ─────────────────────────────────────────────
-let userCareer='';
+let userNick='';
 
 function startQuiz(){
+  userNick=document.getElementById('inp-nick').value.trim();
   userJob=document.getElementById('sel-job').value;
   userCareer=document.getElementById('sel-career').value;
   userTool=document.getElementById('sel-tool').value;
   userPeriod=document.getElementById('sel-period').value;
+  if(!userNick){alert('닉네임을 입력해주세요.');return;}
   if(!userJob){alert('직무를 선택해주세요.');return;}
   if(!userCareer){alert('경력을 선택해주세요.');return;}
   if(!userTool){alert('AI 도구를 선택해주세요.');return;}
@@ -1231,6 +1240,7 @@ async function submitAll(){
 
   const payload={
     timestamp:new Date().toISOString(),code,
+    nickname:userNick,
     job:userJob,career:userCareer,tool:userTool,period:userPeriod,
     level:'Lv.'+userLv,score:userScore,
     trees:selTrees.map(id=>TREES.find(x=>x.id===id).name).join(', '),
@@ -1241,7 +1251,7 @@ async function submitAll(){
   };
 
   const status=document.getElementById('submit-status');
-  if(PA_URL&&PA_URL!=='https://0716920060d4e85fad17f9b1d7ffd4.84.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9e18c406870d47379e8806c4d17a7fe3/triggers/manual/paths/invoke?api-version=1'){
+  if(PA_URL&&PA_URL!=='YOUR_POWER_AUTOMATE_URL_HERE'){
     try{
       const res=await fetch(PA_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       status.textContent=res.ok||res.status===202?'기록 완료 — 코드: '+code:'전송 실패 ('+res.status+')';
@@ -1269,7 +1279,8 @@ function show(id){
 function restart(){
   cur=0;ANS=new Array(QS.length).fill(null);
   userLv=1;userScore=0;selTrees=[];treeLv={};styleVal='';timeVal='';goalTabIdx=0;
-  userCareer='';
+  userNick='';
+  document.getElementById('inp-nick').value='';
   ['sel-job','sel-career','sel-tool','sel-period'].forEach(id=>{
     const el=document.getElementById(id);
     if(el)el.value='';
