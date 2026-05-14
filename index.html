@@ -1241,7 +1241,7 @@ async function submitAll(){
   };
 
   const status=document.getElementById('submit-status');
-  if(PA_URL&&PA_URL!=='YOUR_POWER_AUTOMATE_URL_HERE'){
+  if(PA_URL&&PA_URL!=='https://0716920060d4e85fad17f9b1d7ffd4.84.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9e18c406870d47379e8806c4d17a7fe3/triggers/manual/paths/invoke?api-version=1'){
     try{
       const res=await fetch(PA_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       status.textContent=res.ok||res.status===202?'기록 완료 — 코드: '+code:'전송 실패 ('+res.status+')';
