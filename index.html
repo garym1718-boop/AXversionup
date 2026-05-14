@@ -1254,7 +1254,7 @@ async function submitAll(){
   const status=document.getElementById('submit-status');
   if(PA_URL&&PA_URL!=='YOUR_POWER_AUTOMATE_URL_HERE'){
     try{
-      await fetch(PA_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      await fetch(PA_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       // no-cors 모드에서는 응답 확인 불가 → 전송 시도 완료로 처리
       status.textContent='제출 완료 — 코드: '+code;
       status.style.color='var(--green)';
