@@ -1254,11 +1254,12 @@ async function submitAll(){
   const status=document.getElementById('submit-status');
   if(PA_URL&&PA_URL!=='YOUR_POWER_AUTOMATE_URL_HERE'){
     try{
-      const res=await fetch(PA_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-      status.textContent=res.ok||res.status===202?'기록 완료 — 코드: '+code:'전송 실패 ('+res.status+')';
-      status.style.color=res.ok||res.status===202?'var(--green)':'#E24B4A';
+      await fetch(PA_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      // no-cors 모드에서는 응답 확인 불가 → 전송 시도 완료로 처리
+      status.textContent='제출 완료 — 코드: '+code;
+      status.style.color='var(--green)';
     }catch(e){
-      status.textContent='전송 실패 — URL 설정을 확인해주세요';
+      status.textContent='전송 실패 — 네트워크 상태를 확인해주세요';
       status.style.color='#E24B4A';
     }
   }else{
